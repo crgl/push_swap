@@ -25,43 +25,51 @@ t_dblstck	*dblstck_new(int num)
 	return (new_ds);
 }
 
-void	add(t_dblstck **atop, t_dblstck *to_add)
+void		add(t_dblstck **atop, t_dblstck *to_add)
 {
 	if (*atop == NULL)
 		*atop = to_add;
 	to_add->next = *atop;
 	to_add->prev = (*atop)->prev;
+	(*atop)->prev->next = to_add;
 	(*atop)->prev = to_add;
-	if ((*atop)->next == *atop)
-		(*atop)->next = to_add;
 	*atop = to_add;
 }
 
-void	rotate(t_dblstck **atop, t_bool rev)
+void		rotate(t_dblstck **atop, t_bool rev)
 {
+	if (*atop == NULL)
+		return ;
 	if (rev)
 		*atop = (*atop)->prev;
 	else
 		*atop = (*atop)->next;
 }
 
-void	swap(t_dblstck **top)
+void		swap(t_dblstck **atop)
 {
 	t_dblstck	*first;
 	t_dblstck	*second;
 
-	first = *top;
+	first = *atop;
 	if (first == NULL)
 		return ;
+	if (first->next->next == first)
+	{
+		*atop = first->next;
+		return ;
+	}
 	second = first->next;
+	first->prev->next = second;
+	second->next->prev = first;
 	second->prev = first->prev;
 	first->next = second->next;
 	first->prev = second;
 	second->next = first;
-	*top = second;
+	*atop = second;
 }
 
-void	push(t_dblstck **dst_top, t_dblstck **src_top)
+void		push(t_dblstck **dst_top, t_dblstck **src_top)
 {
 	t_dblstck	*tmp;
 

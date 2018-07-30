@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgleason <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/27 17:23:29 by cgleason          #+#    #+#             */
-/*   Updated: 2018/07/27 17:23:41 by cgleason         ###   ########.fr       */
+/*   Created: 2018/07/27 21:48:35 by cgleason          #+#    #+#             */
+/*   Updated: 2018/07/27 21:48:37 by cgleason         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_bool	ft_strisdigits(char *s)
 {
+	if (*s == '-')
+		s++;
 	while (*s)
 	{
 		if (!ft_isdigit(*s))
@@ -23,18 +25,26 @@ t_bool	ft_strisdigits(char *s)
 	return (wahr);
 }
 
-int		stck_issorted(t_dblstck *A, t_dblstck *B)
+int		stck_issorted(t_dblstck *astck, t_dblstck *bstck)
 {
 	void	*begin;
-	if (B != NULL)
-		return (falsch);
-	begin = &(*A);
-	while ((void *)(A->next) - begin)
+
+	if (bstck != NULL)
 	{
-		if (A->next->num > A->num)
-			return (falsch);
-		A = A->next;
+		ft_putendl("KO");
+		return (falsch);
 	}
+	begin = &(*astck);
+	while ((void *)(astck->next) != begin)
+	{
+		if (astck->next->num < astck->num)
+		{
+			ft_putendl("KO");
+			return (falsch);
+		}
+		astck = astck->next;
+	}
+	ft_putendl("OK");
 	return (wahr);
 }
 
