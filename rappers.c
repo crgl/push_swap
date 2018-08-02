@@ -12,42 +12,6 @@
 
 #include "swap_push.h"
 
-t_bool	ft_strisdigits(char *s)
-{
-	if (*s == '-')
-		s++;
-	while (*s)
-	{
-		if (!ft_isdigit(*s))
-			return (falsch);
-		s++;
-	}
-	return (wahr);
-}
-
-int		stck_issorted(t_dblstck *astck, t_dblstck *bstck)
-{
-	void	*begin;
-
-	if (bstck != NULL)
-	{
-		ft_putendl("KO");
-		return (falsch);
-	}
-	begin = &(*astck);
-	while ((void *)(astck->next) != begin)
-	{
-		if (astck->next->num < astck->num)
-		{
-			ft_putendl("KO");
-			return (falsch);
-		}
-		astck = astck->next;
-	}
-	ft_putendl("OK");
-	return (wahr);
-}
-
 void	wrappush(t_dblstck **dst, t_dblstck **src, t_bool rev)
 {
 	(void)rev;

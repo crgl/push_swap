@@ -6,7 +6,7 @@
 #    By: cgleason <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/25 21:58:39 by cgleason          #+#    #+#              #
-#    Updated: 2018/07/27 17:35:11 by cgleason         ###   ########.fr        #
+#    Updated: 2018/08/01 16:34:13 by cgleason         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,11 @@ CC = @gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRC1 = stack_ops.c executor.c pushers.c
+DBFLAGS = -g -o debug
 
-SRC2 = 
+SRC1 = stack_ops.c executor.c rappers.c freers.c helpers.c
+
+SRC2 = foray.c rappers.c stack_ops.c freers.c helpers.c
 
 OBJS1 = $(SRC1:.c=.o)
 
@@ -30,7 +32,7 @@ LIB = $(LIBDIR)/libft.a
 
 LIBDIR = libft
 
-ALL: $(OBJS1) $(OBJS2) $(LIB)
+all: $(OBJS1) $(OBJS2) $(LIB)
 	$(CC) $(CFLAGS) $(OBJS1) $(LIB) -o $(EXEC1)
 	$(CC) $(CFLAGS) $(OBJS2) $(LIB) -o $(EXEC2)
 
@@ -39,9 +41,12 @@ $(LIB):
 
 .PHONY: clean fclean all re
 
+debug: $(SRC2) $(LIB)
+	$(CC) $(DBFLAGS) $(SRC2) $(LIB)
+
 clean:
-	@rm $(OBJS1)
-	@rm $(OBJS2)
+	@rm -f $(OBJS1)
+	@rm -f $(OBJS2)
 	@cd $(LIBDIR) && make clean
 
 fclean:

@@ -12,47 +12,6 @@
 
 #include "swap_push.h"
 
-t_bool	find_int(int *checklist, int to_check, size_t lim)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < lim)
-	{
-		if (checklist[i] == to_check)
-			return (wahr);
-		i++;
-	}
-	return (falsch);
-}
-
-t_bool	check_dup(t_dblstck *stack)
-{
-	void	*begin;
-	int		*checklist;
-	size_t	i;
-
-	begin = &(*stack);
-	stack = stack->next;
-	i = 0;
-	while (++i && (void *)stack != begin)
-		stack = stack->next;
-	checklist = (int *)malloc((i) * sizeof(int));
-	if (checklist == NULL)
-		return (wahr);
-	checklist[0] = stack->num;
-	stack = stack->next;
-	i = 1;
-	while ((void *)stack != begin)
-	{
-		if (find_int(checklist, stack->num, i))
-			return (wahr);
-		checklist[i++] = stack->num;
-		stack = stack->next;
-	}
-	return (falsch);
-}
-
 int		execute_ops(t_dblstck **astck, t_dblstck **bstck, char *op, t_bool rev)
 {
 	t_wraptor	ops[4];
@@ -95,7 +54,7 @@ int		parse_ops(t_dblstck *astck, t_dblstck *bstck)
 		if (ft_strlen(op) != 2 && ft_strlen(op) != 3)
 		{
 			ft_putendl_fd("Error", 2);
-			free(op);
+			free_stack_ops(&astck, &bstck, op);
 			return (1);
 		}
 		i = 0;
@@ -103,7 +62,7 @@ int		parse_ops(t_dblstck *astck, t_dblstck *bstck)
 			rev = ++i;
 		if (execute_ops(&astck, &bstck, op + i, rev) == -1)
 		{
-			free(op);
+			free_stack_ops(&astck, &bstck, op);
 			return (-1);
 		}
 		free(op);
@@ -114,28 +73,24 @@ int		parse_ops(t_dblstck *astck, t_dblstck *bstck)
 int		main(int argc, char **argv)
 {
 	t_dblstck	*astck;
-	t_dblstck	*bstck;
 
 	astck = NULL;
-	bstck = NULL;
-	if (argc == 1 || (argc == 2 && ft_strisdigits(argv[1])))
+	if (argc == 1 || (argc == 2 && ft_isint(argv[1])))
 	{
 		ft_putendl("OK");
 		return (0);
 	}
 	while (--argc)
 	{
-		if (!ft_strisdigits(argv[argc]))
-		{
-			ft_putendl_fd("Error", 2);
-			return (1);
-		}
+		if (!ft_isint(argv[argc]))
+			break ;
 		add(&astck, dblstck_new(ft_atoi(argv[argc])));
 	}
-	if (check_dup(astck))
+	if (check_dup(astck) || argc)
 	{
 		ft_putendl_fd("Error", 2);
+		free_stck(&astck);
 		return (1);
 	}
-	return (parse_ops(astck, bstck));
+	return (parse_ops(astck, NULL));
 }

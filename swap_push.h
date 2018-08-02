@@ -38,12 +38,22 @@ void			rotate(t_dblstck **atop, t_bool rev);
 void			swap(t_dblstck **top);
 void			push(t_dblstck **dst_top, t_dblstck **src_top);
 
-int				stck_issorted(t_dblstck *astck, t_dblstck *bstck);
-
-t_bool			ft_strisdigits(char *s);
 void			wrappush(t_dblstck **dst, t_dblstck **src, t_bool rev);
 void			wraprotate(t_dblstck **to_rotate, t_dblstck **ignore,
 					t_bool rev);
 void			wrapswap(t_dblstck **to_swap, t_dblstck **ignore, t_bool rev);
+
+t_bool			ft_isint(char *s);
+t_bool			find_int(int *checklist, int to_check, size_t lim);
+t_bool			check_dup(t_dblstck *stack);
+int				stck_issorted(t_dblstck *astck, t_dblstck *bstck);
+int				quiet_stck_issorted(t_dblstck *astck, t_dblstck *bstck,
+					t_bool rev);
+
+void			free_stck(t_dblstck **astck);
+void			free_stack_ops(t_dblstck **aastck, t_dblstck **abstck,
+					char *op);
+
+void			print_stacks(t_dblstck *astck, t_dblstck *bstck);
 
 #endif
