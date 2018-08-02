@@ -12,6 +12,20 @@
 
 #include "libft.h"
 
+int		chrind(char *s, char c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 char	*ft_strchr(const char *s, int c)
 {
 	while (*s != (char)c && *s != '\0')

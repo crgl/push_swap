@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+# include "printf/printf.h"
 
 # define BUFF_SIZE 1024
 
@@ -98,6 +99,10 @@ void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 
+int				chrind(char *s, char c);
+void			ft_str_toupper(char *s);
+void			ft_str_tolower(char *s);
+
 t_list			*ft_lstnew(void const *content, size_t content_size);
 void			ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
@@ -112,5 +117,12 @@ char			*vec2str(t_vec *vec);
 void			vecdel(t_vec **avec);
 
 int				get_next_line(const int fd, char **line);
+
+size_t			ft_wstrlen(const wchar_t *s);
+wchar_t			*ft_wstrnew(size_t size);
+wchar_t			*ft_wstrjoin(wchar_t const *s1, wchar_t const *s2);
+wchar_t			*ft_wstrdup(wchar_t *s);
+void			wchar_to_utf8(char *utf_str, unsigned long long tmp, int *j);
+char			*ft_to_utf8(wchar_t *wstr, int wchar_num);
 
 #endif
