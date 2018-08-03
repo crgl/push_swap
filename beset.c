@@ -11,171 +11,245 @@
 /* ************************************************************************** */
 
 #include "swap_push.h"
-
-#include "swap_push.h"
-
 #include <stdio.h>
 
-void	stck_align(t_dblstck *current, t_dblstck *target, t_bool is_b)
+int		beset_stck_issorted(t_dblstck *astck, t_dblstck *bstck, t_bool rev,
+			int n)
 {
-	int			fwd;
-	int			rev;
-	int			i;
+	void	*begin;
+	int		i;
+
+	i = 0;
+	if (bstck != NULL)
+		return (falsch);
+	begin = &(*astck);
+	while ((void *)(astck->next) != begin && i++ < n)
+	{
+		if (!rev)
+		{
+			if (astck->next->num < astck->num)
+				return (falsch);
+			astck = astck->next;
+		}
+		else
+		{
+			if (astck->next->num > astck->num)
+				return (falsch);
+			astck = astck->next;
+		}
+	}
+	return (wahr);
+}
+
+int		stcklst_len(t_dblstck **stck_array)
+{
+	int	i;
+
+	i = 0;
+	while (stck_array[i] != NULL)
+		i++;
+	return (i);
+}
+
+void	heap_repair(t_dblstck **stck_array, int ind, int n)
+{
+	int			lind;
+	int			rind;
+	int			maxind;
 	t_dblstck	*tmp;
 
-	fwd = 0;
-	rev = 0;
-	tmp = current;
-	while (tmp != target)
+	lind = 2 * ind + 1;
+	rind = 2 * ind + 2;
+	maxind = ind;
+	if (lind < n)
+		if (stck_array[lind]->num > stck_array[maxind]->num)
+			maxind = lind;
+	if (rind < n)
+		if (stck_array[rind]->num > stck_array[maxind]->num)
+			maxind = rind;
+	if (maxind != ind)
 	{
+		tmp = stck_array[ind];
+		stck_array[ind] = stck_array[maxind];
+		stck_array[maxind] = tmp;
+		heap_repair(stck_array, maxind, n);
+	}
+}
+
+void	stck_heapsort(t_dblstck **stck_array)
+{
+	int			n;
+	t_dblstck	*tmp;
+	int			i;
+
+	n = stcklst_len(stck_array);
+	i = n / 2;
+	while (i)
+		heap_repair(stck_array, i--, n);
+	i = n;
+	while (i--)
+	{
+		tmp = stck_array[i];
+		stck_array[i] = stck_array[0];
+		stck_array[0] = tmp;
+		heap_repair(stck_array, 0, i);
+	}
+}
+
+int		convert_rank(t_dblstck *stck)
+{
+	t_dblstck	**stck_array;
+	int			i;
+	t_dblstck	*top;
+	t_dblstck	*tmp;
+
+	top = stck;
+	tmp = top->next;
+	i = 1;
+	while (tmp != top)
+	{
+		i++;
 		tmp = tmp->next;
-		fwd++;
 	}
-	tmp = current;
-	while (tmp != target)
+	stck_array = (t_dblstck **)ft_memalloc((i + 1) * sizeof(t_dblstck *));
+	if (stck_array == NULL)
+		return (0);
+	while (i--)
 	{
-		tmp = tmp->prev;
-		rev++;
+		stck_array[i] = tmp;
+		tmp = tmp->next;
 	}
+	stck_heapsort(stck_array);
+	i = -1;
+	while (stck_array[++i] != NULL)
+		stck_array[i]->num = i;
+	return (i);
+}
+
+void	handle_end(t_dblstck **dst_stck, t_dblstck **src_stck, t_range range)
+{
+
+	return ;
+}
+
+void	sort_and_push_b(t_dblstck **dst_stck, t_dblstck **src_stck, t_range range)
+{
+	int	i;
+
 	i = 0;
-	if (rev < fwd)
-		while (i++ < rev)
-			(is_b) ? ft_putendl("rrb") : ft_putendl("rra");
-	else
-		while (i++ < fwd)
-			(is_b) ? ft_putendl("rb") : ft_putendl("ra");
-}
-
-void	push_sorted(t_dblstck **adst, t_dblstck **asrc)
-{
-	t_dblstck	*dst_top;
-
-	dst_top = *adst;
-	while (*asrc)
+	while (i < range.end - range.start)
 	{
-		if ((*asrc)->num > dst_top->prev->num)
-		{
-			ft_putendl("pa");
-			push(&dst_top, asrc);
-		}
-		else
-		{
-			ft_putendl("rra");
-			rotate(&dst_top, wahr);
-		}
-	}
-	stck_align(dst_top, *adst, falsch);
-}
-
-void	push_unsorted_b(t_dblstck **adst, t_dblstck **asrc)
-{
-	t_dblstck	*atop;
-	int			comparor;
-
-	if (quiet_stck_issorted(*asrc, NULL, wahr))
-		return ;
-	atop = *asrc;
-	comparor = atop->num;
-	ft_putendl("rb");
-	rotate(asrc, falsch);
-	while (*asrc != atop)
-	{
-		if ((*asrc)->num > comparor)
-		{
-			ft_putendl("pa");
-			ft_putendl("ra");
-			push(adst, asrc);
-			rotate(adst, falsch);
-		}
-		else
-		{
-			comparor = (*asrc)->num;
-			ft_putendl("rb");
-			rotate(asrc, falsch);
-		}
-	}
-}
-
-void	clean_b(t_dblstck **astck, t_dblstck **bstck)
-{
-	int			max;
-	t_dblstck	*loc_max;
-	t_dblstck	*start;
-
-	start = *bstck;
-	loc_max = start;
-	max = start->num;
-	rotate(bstck, falsch);
-	while (*bstck != loc_max)
-	{
-		if ((*bstck)->num > max)
-		{
-			max = (*bstck)->num;
-			loc_max = *bstck;
-		}
-		rotate(bstck, falsch);
-	}
-	stck_align(start, loc_max, wahr);
-	push_unsorted_b(astck, &loc_max);
-}
-
-void	push_unsorted_a(t_dblstck **adst, t_dblstck **asrc)
-{
-	t_dblstck	*atop;
-	int			comparor;
-
-	atop = *asrc;
-	comparor = atop->num;
-	ft_putendl("ra");
-	rotate(asrc, falsch);
-	while (*asrc != atop)
-	{
-		if ((*asrc)->num < comparor)
+		if ((*src_stck)->num < range.start + (range.end - range.start) / 2)
 		{
 			ft_putendl("pb");
-			push(adst, asrc);
+			push(dst_stck, src_stck);
 		}
 		else
 		{
-			comparor = (*asrc)->num;
 			ft_putendl("ra");
-			rotate(asrc, falsch);
+			rotate(src_stck, falsch);
 		}
+		i++;
 	}
+	i = (range.end - range.start) / 2;
+	while (i < range.end - range.start)
+	{
+		ft_putendl("rra");
+		rotate(src_stck, wahr);
+		i++;
+	}
+	if (range.end - range.start <= 6)
+		handle_end(dst_stck, src_stck, range);
+	else
+		sort_and_push_a(src_stck, dst_stck,
+			(t_range){(range.end - range.start) / 2, range.end});
+
 }
 
-void	print_ops(t_dblstck *astck, t_dblstck *bstck)
+void	sort_and_push_a(t_dblstck **dst_stck, t_dblstck **src_stck, t_range range)
 {
-	int			min;
-	t_dblstck	*loc_min;
-	t_dblstck	*start;
+	int	i;
 
-	start = astck;
-	loc_min = astck;
-	min = astck->num;
-	astck = astck->next;
-	while (astck != loc_min)
+	i = 0;
+	while (i < range.end - range.start)
 	{
-		if (astck->num < min)
+		if ((*src_stck)->num < range.start + (range.end - range.start) / 2)
 		{
-			min = astck->num;
-			loc_min = astck;
+			ft_putendl("pa");
+			push(dst_stck, src_stck);
 		}
-		astck = astck->next;
+		else
+		{
+			ft_putendl("rb");
+			rotate(src_stck, falsch);
+		}
+		i++;
 	}
-	stck_align(start, loc_min, falsch);
-	while (!quiet_stck_issorted(loc_min, bstck, falsch))
+	i = (range.end - range.start) / 2;
+	while (i < range.end - range.start)
 	{
+		ft_putendl("rrb");
+		rotate(src_stck, wahr);
+		i++;
+	}
+	if (range.end - range.start <= 6)
+		handle_end(dst_stck, src_stck, range);
+	else
+		sort_and_push_b(src_stck, dst_stck,
+			(t_range){(range.end - range.start) / 2, range.end});
+}
+
+void	dblstck_push_b(t_dblstck **src_stck, t_dblstck **dst_stck, t_range range)
+{
+	int	i;
+
+	i = 0;
+	while (i < range.end - range.start)
+	{
+		if ((*src_stck)->num < range.start + (range.end - range.start) / 2)
+		{
+			ft_putendl("pb");
+			push(dst_stck, src_stck);
+		}
+		else
+		{
+			ft_putendl("ra");
+			rotate(src_stck, falsch);
+		}
+		i++;
+	}
+	if (i > 0)
+		dblstck_push_b(src_stck, dst_stck,
+			(t_range){(range.end - range.start) / 2, range.end});
+}
+
+void	print_ops(t_dblstck *astck, t_dblstck *bstck, int n)
+{
+	t_dblstck	*start;
+	int			i;
+
+	if (n = 0)
+	{
+		ft_putendl_fd("Error", 2);
 		return ;
-		// push_unsorted_a(&bstck, &loc_min);
-		// clean_b(&loc_min, &bstck);
-		// push_sorted(&loc_min, &bstck);
+	}
+	start = astck;
+	if (!beset_stck_issorted(start, bstck, falsch, n))
+	{
+		dblstck_push_b(&astck, &bstck, (t_range){0, n});
+		i = 1;
+		while (i < n)
+		{
+			sort_and_push_a(&astck, &bstck, (t_range){n - i, n - (i / 2)});
+			i *= 2;
+		}
 	}
 };
 
 int		main(int argc, char **argv)
 {
 	t_dblstck	*astck;
+	int			size;
 
 	astck = NULL;
 	if (argc == 1 || (argc == 2 && ft_isint(argv[1])))
@@ -192,7 +266,8 @@ int		main(int argc, char **argv)
 		free_stck(&astck);
 		return (1);
 	}
-	print_ops(astck, NULL);
+	size = convert_rank(astck);
+	print_ops(astck, NULL, size);
 	free_stck(&astck);
 	return (0);
 }

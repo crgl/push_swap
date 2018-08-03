@@ -22,7 +22,7 @@ int		execute_ops(t_dblstck **astck, t_dblstck **bstck, char *op, t_bool rev)
 	ops[1] = NULL;
 	ops[2] = &wraprotate;
 	ops[3] = &wrapswap;
-	if (ind > 3 || ind == 1)
+	if (ind > 3 || ind == 1 || ind < 0)
 	{
 		ft_putendl_fd("Error", 2);
 		return (-1);

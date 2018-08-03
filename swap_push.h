@@ -23,6 +23,12 @@ typedef enum	e_bool
 	wahr,
 }				t_bool;
 
+typedef struct	s_range
+{
+	int		start;
+	int		end;
+}				t_range;
+
 typedef struct	s_dblstck
 {
 	struct s_dblstck	*next;
