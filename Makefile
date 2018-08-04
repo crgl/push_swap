@@ -6,7 +6,7 @@
 #    By: cgleason <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/25 21:58:39 by cgleason          #+#    #+#              #
-#    Updated: 2018/08/01 16:34:13 by cgleason         ###   ########.fr        #
+#    Updated: 2018/08/04 15:21:14 by cgleason         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,11 +26,11 @@ CFLAGS = -Wall -Wextra -Werror
 
 DBFLAGS = -g -o debug
 
-CMNSRC = stack_ops.c rappers.c freers.c helpers.c pile.c printing.c
+CMNSRC = stack_ops.c rappers.c freers.c helpers.c pile.c printing.c sorters.c
 
 SRC1 = executor.c
 
-SRC2 = beset.c
+SRC2 = beset.c onset.c
 
 VIZSRC = visualizer.c
 
@@ -68,7 +68,7 @@ fclean: clean
 	@rm -f $(EXEC1)
 	@rm -f $(EXEC2)
 	@rm -f $(VIZ)
-	@rm -rf debug*
+	@rm -rf debug debug.dSYM
 	@cd $(LIBDIR) && make fclean
 
 re: fclean all

@@ -17,6 +17,9 @@
 # include <unistd.h>
 # include "libft/libft.h"
 
+# define SIZE (range.end - range.start)
+# define MIDPT range.start + SIZE / 2
+
 typedef enum	e_bool
 {
 	falsch,
@@ -53,12 +56,14 @@ t_bool			ft_isint(char *s);
 t_bool			find_int(int *checklist, int to_check, size_t lim);
 t_bool			check_dup(t_dblstck *stack);
 int				stck_issorted(t_dblstck *astck, t_dblstck *bstck);
-int				quiet_stck_issorted(t_dblstck *astck, t_dblstck *bstck,
-					t_bool rev);
+t_bool			subset_issorted(t_dblstck *stck, int n, t_bool rev);
+int				stck_len(t_dblstck *stck);
 
-void			stck_push_a(t_dblstck **src_stck, t_dblstck **dst_stck,
-					t_range range);
-void			stck_push_b(t_dblstck **src_stck, t_dblstck **dst_stck,
+void			sorted_push(t_dblstck **src, t_dblstck **dst, int n,
+					t_bool dstisb);
+void			stck_push_a(t_dblstck **src, t_dblstck **dst, t_range range);
+void			stck_push_b(t_dblstck **src, t_dblstck **dst, t_range range);
+int				prepush_stck_a(t_dblstck **src, t_dblstck **dst,
 					t_range range);
 
 void			free_stck(t_dblstck **astck);

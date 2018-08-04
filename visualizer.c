@@ -19,7 +19,6 @@ int		execute_ops(t_dblstck **astck, t_dblstck **bstck, char *op, t_bool rev)
 
 	ind = op[0] - 'p';
 	ops[0] = &wrappush;
-	ops[1] = NULL;
 	ops[2] = &wraprotate;
 	ops[3] = &wrapswap;
 	if (ind > 3 || ind == 1 || ind < 0)
@@ -38,6 +37,7 @@ int		execute_ops(t_dblstck **astck, t_dblstck **bstck, char *op, t_bool rev)
 		ft_putendl_fd("Error", 2);
 		return (-1);
 	}
+	clear_and_print(*astck, *bstck);
 	return (0);
 }
 
@@ -48,8 +48,6 @@ int		parse_ops(t_dblstck *astck, t_dblstck *bstck)
 	t_bool	rev;
 	int		i;
 
-	i = color_of(astck);
-	clear_and_print(astck, bstck);
 	while ((check = get_next_line(0, &op)) > 0)
 	{
 		rev = falsch;
@@ -67,10 +65,8 @@ int		parse_ops(t_dblstck *astck, t_dblstck *bstck)
 			free_stack_ops(&astck, &bstck, op);
 			return (-1);
 		}
-		clear_and_print(astck, bstck);
 		free(op);
 	}
-	cleanup();
 	return (!check) ? stck_issorted(astck, bstck) : check;
 }
 
@@ -96,5 +92,6 @@ int		main(int argc, char **argv)
 		free_stck(&astck);
 		return (1);
 	}
+	(void)color_of(astck);
 	return (parse_ops(astck, NULL));
 }

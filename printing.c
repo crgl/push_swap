@@ -44,12 +44,28 @@ int		color_of(t_dblstck *stck)
 	return (20 + (32 * (stck->num - min)) / (max - min + 1));
 }
 
+void	print_line(t_dblstck **stck)
+{
+	int			color;
+	int			width;
+
+	if (*stck != NULL)
+	{
+		color = color_of(*stck);
+		width = 2 * ((color - 20) / 2) + 2;
+		ft_printf("%*.i%{b}%*.i\033[0m%*.i\t", (32 - width) / 2, 0, color,
+			width, 0, (32 - width) / 2, 0);
+		cleanup();
+		*stck = (*stck)->next;
+	}
+	else
+		ft_printf("%32.i\t", 0);
+}
+
 void	clear_and_print(t_dblstck *astck, t_dblstck *bstck)
 {
 	t_dblstck	*atop;
 	t_dblstck	*btop;
-	int			color;
-	int			width;
 
 	usleep(10000);
 	ft_printf("\033[2J\033[;H\033[?25l\n\n");
@@ -61,27 +77,9 @@ void	clear_and_print(t_dblstck *astck, t_dblstck *bstck)
 		bstck->prev->next = NULL;
 	while (astck != NULL || bstck != NULL)
 	{
-		if (astck != NULL)
-		{
-			color = color_of(astck);
-			width = 2 * ((color - 20) / 2) + 2;
-			ft_printf("%*.i%{b}%*.i\033[0m%*.i\t", (32 - width) / 2, 0, color, width,
-				0, (32 - width) / 2, 0);
-			cleanup();
-			astck = astck->next;
-		}
-		else
-			ft_printf("%32.i\t", 0);
-		if (bstck != NULL)
-		{
-			color = color_of(bstck);
-			width = 2 * ((color - 20) / 2) + 2;
-			ft_printf("%*.i%{b}%*.i\033[0m%*.i\t\n", (32 - width) / 2, 0, color, width,
-				0, (32 - width) / 2, 0);
-			bstck = bstck->next;
-		}
-		else
-			ft_printf("%12.i\t\t\n", 0);
+		print_line(&astck);
+		print_line(&bstck);
+		ft_printf("\n");
 	}
 	if (atop != NULL)
 		atop->prev->next = atop;

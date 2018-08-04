@@ -12,43 +12,6 @@
 
 #include "swap_push.h"
 
-void	print_stacks(t_dblstck *astck, t_dblstck *bstck)
-{
-	t_dblstck	*atop;
-	t_dblstck	*btop;
-
-	atop = astck;
-	btop = bstck;
-	if (atop == NULL)
-		ft_putendl("(NULL)");
-	else
-	{
-		ft_putnbr(astck->num);
-		astck = astck->next;
-		while (astck != atop)
-		{
-			ft_putchar('\n');
-			ft_putnbr(astck->num);
-			astck = astck->next;
-		}
-	}
-	ft_putendl("\nA\n");
-	if (btop == NULL)
-		ft_putendl("(NULL)");
-	else
-	{
-		ft_putnbr(bstck->num);
-		bstck = bstck->next;
-		while (bstck != btop)
-		{
-			ft_putchar('\n');
-			ft_putnbr(bstck->num);
-			bstck = bstck->next;
-		}
-	}
-	ft_putendl("\nB\n");
-}
-
 t_bool	ft_isint(char *s)
 {
 	char	*shouldbes;
@@ -60,58 +23,6 @@ t_bool	ft_isint(char *s)
 		return (falsch);
 	}
 	free(shouldbes);
-	return (wahr);
-}
-
-int		quiet_stck_issorted(t_dblstck *astck, t_dblstck *bstck, t_bool rev)
-{
-	void	*begin;
-
-	if (bstck != NULL)
-		return (falsch);
-	begin = &(*astck);
-	while ((void *)(astck->next) != begin)
-	{
-		if (!rev)
-		{
-			if (astck->next->num < astck->num)
-				return (falsch);
-			astck = astck->next;
-		}
-		else
-		{
-			if (astck->next->num > astck->num)
-				return (falsch);
-			astck = astck->next;
-		}
-	}
-	return (wahr);
-}
-
-int		stck_issorted(t_dblstck *astck, t_dblstck *bstck)
-{
-	void	*begin;
-
-	if (bstck != NULL)
-	{
-		ft_putendl("KO");
-		free_stck(&astck);
-		free_stck(&bstck);
-		return (falsch);
-	}
-	begin = &(*astck);
-	while ((void *)(astck->next) != begin)
-	{
-		if (astck->next->num < astck->num)
-		{
-			ft_putendl("KO");
-			free_stck(&astck);
-			return (falsch);
-		}
-		astck = astck->next;
-	}
-	ft_putendl("OK");
-	free_stck(&astck);
 	return (wahr);
 }
 

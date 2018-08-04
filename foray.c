@@ -12,13 +12,35 @@
 
 #include "swap_push.h"
 
-#include <stdio.h>
+int		quiet_stck_issorted(t_dblstck *astck, t_dblstck *bstck, t_bool rev)
+{
+	void	*begin;
+
+	if (bstck != NULL)
+		return (falsch);
+	begin = &(*astck);
+	while ((void *)(astck->next) != begin)
+	{
+		if (!rev)
+		{
+			if (astck->next->num < astck->num)
+				return (falsch);
+			astck = astck->next;
+		}
+		else
+		{
+			if (astck->next->num > astck->num)
+				return (falsch);
+			astck = astck->next;
+		}
+	}
+	return (wahr);
+}
 
 void	stck_align(t_dblstck *current, t_dblstck *target, t_bool is_b)
 {
 	int			fwd;
 	int			rev;
-	int			i;
 	t_dblstck	*tmp;
 
 	fwd = 0;
@@ -35,12 +57,11 @@ void	stck_align(t_dblstck *current, t_dblstck *target, t_bool is_b)
 		tmp = tmp->prev;
 		rev++;
 	}
-	i = 0;
 	if (rev < fwd)
-		while (i++ < rev)
+		while (rev--)
 			(is_b) ? ft_putendl("rrb") : ft_putendl("rra");
 	else
-		while (i++ < fwd)
+		while (fwd--)
 			(is_b) ? ft_putendl("rb") : ft_putendl("ra");
 }
 
@@ -168,7 +189,7 @@ void	print_ops(t_dblstck *astck, t_dblstck *bstck)
 		clean_b(&loc_min, &bstck);
 		push_sorted(&loc_min, &bstck);
 	}
-};
+}
 
 int		main(int argc, char **argv)
 {

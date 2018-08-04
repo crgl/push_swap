@@ -71,13 +71,11 @@ int		convert_rank(t_dblstck *stck)
 {
 	t_dblstck	**stck_array;
 	int			i;
-	t_dblstck	*top;
 	t_dblstck	*tmp;
 
-	top = stck;
-	tmp = top->next;
+	tmp = stck->next;
 	i = 1;
-	while (tmp != top)
+	while (tmp != stck)
 	{
 		i++;
 		tmp = tmp->next;
