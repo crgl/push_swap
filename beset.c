@@ -207,11 +207,6 @@ void	stck_push_a(t_dblstck **src_stck, t_dblstck **dst_stck, t_range range)
 		ft_putendl("sb");
 		swap(src_stck);
 	}
-	// if (subset_issorted(*src_stck, range.end - range.start, wahr))
-	// {
-	// 	sorted_push_a(src_stck, dst_stck, range.end - range.start);
-	// 	return ;
-	// }
 	i = 0;
 	j = 0;
 	while (i < range.end - range.start)
@@ -236,13 +231,13 @@ void	stck_push_a(t_dblstck **src_stck, t_dblstck **dst_stck, t_range range)
 		ft_putendl("rrb");
 		rotate(src_stck, wahr);
 	}
-	if (j >= 1)
+	if (i > 1)
 		stck_push_a(src_stck, dst_stck,
 			(t_range){range.start, range.start + (range.end - range.start) / 2});
+	stck_push_b(dst_stck, src_stck,
+		(t_range){range.start + (range.end - range.start) / 2,
+		range.start + (range.end - range.start) / 2 + j});
 	sorted_push_b(dst_stck, src_stck, j);
-	// stck_push_b(dst_stck, src_stck,
-	// 	(t_range){range.start + (range.end - range.start) / 2,
-	// 	range.start + (range.end - range.start) / 2 + j});
 }
 
 void	stck_push_b(t_dblstck **src_stck, t_dblstck **dst_stck, t_range range)
@@ -258,11 +253,6 @@ void	stck_push_b(t_dblstck **src_stck, t_dblstck **dst_stck, t_range range)
 		ft_putendl("sa");
 		swap(src_stck);
 	}
-	// if (subset_issorted(*src_stck, range.end - range.start, falsch))
-	// {
-	// 	sorted_push_b(src_stck, dst_stck, range.end - range.start);
-	// 	return ;
-	// }
 	i = 0;
 	j = 0;
 	while (i < range.end - range.start)
@@ -287,13 +277,13 @@ void	stck_push_b(t_dblstck **src_stck, t_dblstck **dst_stck, t_range range)
 		ft_putendl("rra");
 		rotate(src_stck, wahr);
 	}
-	if (j >= 1)
+	if (i > 1)
 		stck_push_b(src_stck, dst_stck,
 			(t_range){range.start + (range.end - range.start) / 2, range.end});
+	stck_push_a(dst_stck, src_stck,
+		(t_range){range.start + (range.end - range.start) / 2 - j,
+		range.start + (range.end - range.start) / 2});
 	sorted_push_a(dst_stck, src_stck, j);
-	// stck_push_a(dst_stck, src_stck,
-	// 	(t_range){range.start + (range.end - range.start) / 2 - j,
-	// 	range.start + (range.end - range.start) / 2});
 }
 
 void	return_stacks(t_dblstck **src_stck, t_dblstck **dst_stck, t_range range)
