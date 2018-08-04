@@ -56,10 +56,23 @@ int				stck_issorted(t_dblstck *astck, t_dblstck *bstck);
 int				quiet_stck_issorted(t_dblstck *astck, t_dblstck *bstck,
 					t_bool rev);
 
+void			stck_push_a(t_dblstck **src_stck, t_dblstck **dst_stck,
+					t_range range);
+void			stck_push_b(t_dblstck **src_stck, t_dblstck **dst_stck,
+					t_range range);
+
 void			free_stck(t_dblstck **astck);
 void			free_stack_ops(t_dblstck **aastck, t_dblstck **abstck,
 					char *op);
 
+int				stcklst_len(t_dblstck **stck_array);
+void			heap_repair(t_dblstck **stck_array, int ind, int n);
+void			stck_heapsort(t_dblstck **stck_array);
+int				convert_rank(t_dblstck *stck);
+
 void			print_stacks(t_dblstck *astck, t_dblstck *bstck);
+void			find_extrema(t_dblstck *stck, long *min, long *max);
+int				color_of(t_dblstck *stck);
+void			clear_and_print(t_dblstck *astck, t_dblstck *bstck);
 
 #endif

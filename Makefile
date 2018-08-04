@@ -26,11 +26,15 @@ CFLAGS = -Wall -Wextra -Werror
 
 DBFLAGS = -g -o debug
 
-SRC1 = stack_ops.c executor.c rappers.c freers.c helpers.c
+CMNSRC = stack_ops.c rappers.c freers.c helpers.c pile.c printing.c
 
-SRC2 = foray.c rappers.c stack_ops.c freers.c helpers.c
+SRC1 = executor.c
 
-VIZSRC = stack_ops.c visualizer.c rappers.c freers.c helpers.c
+SRC2 = beset.c
+
+VIZSRC = visualizer.c
+
+CMNOBJS = $(CMNSRC:.c=.o)
 
 OBJS1 = $(SRC1:.c=.o)
 
@@ -38,12 +42,12 @@ OBJS2 = $(SRC2:.c=.o)
 
 VIZOBJS = $(VIZSRC:.c=.o);
 
-all: $(OBJS1) $(OBJS2) $(LIB)
-	$(CC) $(CFLAGS) $(OBJS1) $(LIB) -o $(EXEC1)
-	$(CC) $(CFLAGS) $(OBJS2) $(LIB) -o $(EXEC2)
+all: $(OBJS1) $(OBJS2) $(CMNOBJS) $(LIB)
+	$(CC) $(CFLAGS) $(OBJS1) $(CMNOBJS) $(LIB) -o $(EXEC1)
+	$(CC) $(CFLAGS) $(OBJS2) $(CMNOBJS) $(LIB) -o $(EXEC2)
 
 $(VIZ): $(VIZOBJS) $(LIB)
-	$(CC) $(CFLAGS) $(VIZOBJS) $(LIB) -o $(VIZ)
+	$(CC) $(CFLAGS) $(VIZOBJS) $(CMNOBJS) $(LIB) -o $(VIZ)
 
 $(LIB):
 	@cd $(LIBDIR) && make
@@ -51,18 +55,20 @@ $(LIB):
 .PHONY: clean fclean all re
 
 debug: $(SRC2) $(LIB)
-	$(CC) $(CFLAGS) $(DBFLAGS) $(SRC2) $(LIB)
+	$(CC) $(CFLAGS) $(DBFLAGS) $(SRC2) $(CMNSRC) $(LIB)
 
 clean:
 	@rm -f $(OBJS1)
 	@rm -f $(OBJS2)
+	@rm -f $(CMNOBJS)
 	@rm -f $(VIZOBJS)
 	@cd $(LIBDIR) && make clean
 
-fclean:
+fclean: clean
 	@rm -f $(EXEC1)
 	@rm -f $(EXEC2)
 	@rm -f $(VIZ)
 	@rm -rf debug*
+	@cd $(LIBDIR) && make fclean
 
 re: fclean all
