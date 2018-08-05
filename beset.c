@@ -23,11 +23,8 @@ void	dblstck_push_b(t_dblstck **src, t_dblstck **dst, t_range range)
 {
 	int	j;
 
-	if (SIZE == 2 && !subset_issorted(*src, 2, falsch))
-	{
-		ft_putendl("sa");
-		swap(src);
-	}
+	if (SIZE < 4)
+		dbl_small_stuff(src, dst, range, wahr);
 	if (subset_issorted(*src, SIZE, falsch))
 		return ;
 	j = prepush_stck_a(src, dst, range);
@@ -57,7 +54,7 @@ int		main(int argc, char **argv)
 
 	astck = NULL;
 	if (argc == 1 || (argc == 2 && ft_isint(argv[1])))
-		return (0);
+		return (argc - 2);
 	while (--argc)
 	{
 		if (!ft_isint(argv[argc]))

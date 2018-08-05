@@ -6,15 +6,15 @@
 #    By: cgleason <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/25 21:58:39 by cgleason          #+#    #+#              #
-#    Updated: 2018/08/04 15:21:14 by cgleason         ###   ########.fr        #
+#    Updated: 2018/08/04 21:34:32 by cgleason         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-EXEC1 = checker
+NAME1 = checker
 
-EXEC2 = push_swap
+NAME2 = push_swap
 
-VIZ = viz
+NAME3 = viz
 
 CC = @gcc
 
@@ -26,13 +26,13 @@ CFLAGS = -Wall -Wextra -Werror
 
 DBFLAGS = -g -o debug
 
-CMNSRC = stack_ops.c rappers.c freers.c helpers.c pile.c printing.c sorters.c
+CMNSRC = stack_ops.c rappers.c freers.c helpers.c printing.c sorters.c
 
 SRC1 = executor.c
 
-SRC2 = beset.c onset.c
+SRC2 = beset.c onset.c anhidrosis.c pile.c threes_company.c
 
-VIZSRC = visualizer.c
+SRC3 = visualizer.c
 
 CMNOBJS = $(CMNSRC:.c=.o)
 
@@ -40,35 +40,41 @@ OBJS1 = $(SRC1:.c=.o)
 
 OBJS2 = $(SRC2:.c=.o)
 
-VIZOBJS = $(VIZSRC:.c=.o);
+OBJS3 = $(SRC3:.c=.o);
 
-all: $(OBJS1) $(OBJS2) $(CMNOBJS) $(LIB)
-	$(CC) $(CFLAGS) $(OBJS1) $(CMNOBJS) $(LIB) -o $(EXEC1)
-	$(CC) $(CFLAGS) $(OBJS2) $(CMNOBJS) $(LIB) -o $(EXEC2)
+both: $(NAME1) $(NAME2)
 
-$(VIZ): $(VIZOBJS) $(LIB)
-	$(CC) $(CFLAGS) $(VIZOBJS) $(CMNOBJS) $(LIB) -o $(VIZ)
+$(NAME1): $(OBJS1) $(CMNOBJS) $(LIB)
+	$(CC) $(CFLAGS) $(OBJS1) $(CMNOBJS) $(LIB) -o $(NAME1)
+
+$(NAME2): $(OBJS2) $(CMNOBJS) $(LIB)
+	$(CC) $(CFLAGS) $(OBJS2) $(CMNOBJS) $(LIB) -o $(NAME2)
+
+$(NAME3): $(SRC3) $(CMNSRC) $(LIB)
+	-$(CC) $(CFLAGS) $(SRC3) $(CMNSRC) $(LIB) -o $(NAME3)
 
 $(LIB):
 	@cd $(LIBDIR) && make
 
-.PHONY: clean fclean all re
+.PHONY: clean fclean all re both
 
 debug: $(SRC2) $(LIB)
 	$(CC) $(CFLAGS) $(DBFLAGS) $(SRC2) $(CMNSRC) $(LIB)
 
+all: $(LIB) $(NAME1) $(NAME2) $(NAME3)
+
 clean:
-	@rm -f $(OBJS1)
-	@rm -f $(OBJS2)
-	@rm -f $(CMNOBJS)
-	@rm -f $(VIZOBJS)
+	@-rm -f $(OBJS1)
+	@-rm -f $(OBJS2)
+	@-rm -f $(OBJS3)
+	@-rm -f $(CMNOBJS)
 	@cd $(LIBDIR) && make clean
 
 fclean: clean
-	@rm -f $(EXEC1)
-	@rm -f $(EXEC2)
-	@rm -f $(VIZ)
-	@rm -rf debug debug.dSYM
+	@-rm -f $(NAME1)
+	@-rm -f $(NAME2)
+	@-rm -f $(NAME3)
+	@-rm -rf debug debug.dSYM
 	@cd $(LIBDIR) && make fclean
 
 re: fclean all

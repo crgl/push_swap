@@ -75,7 +75,9 @@ int		main(int argc, char **argv)
 	t_dblstck	*astck;
 
 	astck = NULL;
-	if (argc == 1 || (argc == 2 && ft_isint(argv[1])))
+	if (argc == 1)
+		return (1);
+	if (argc == 2 && ft_isint(argv[1]))
 	{
 		ft_putendl("OK");
 		return (0);

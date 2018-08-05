@@ -42,14 +42,15 @@ t_bool	find_int(int *checklist, int to_check, size_t lim)
 
 t_bool	check_dup(t_dblstck *stack)
 {
-	void	*begin;
-	int		*checklist;
-	size_t	i;
+	t_dblstck	*begin;
+	int			*checklist;
+	size_t		i;
 
-	begin = &(*stack);
+	if ((begin = stack) == NULL)
+		return (wahr);
 	stack = stack->next;
 	i = 0;
-	while (++i && (void *)stack != begin)
+	while (++i && stack != begin)
 		stack = stack->next;
 	checklist = (int *)malloc((i) * sizeof(int));
 	if (checklist == NULL)

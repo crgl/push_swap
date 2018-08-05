@@ -66,11 +66,8 @@ void	stck_push_a(t_dblstck **src, t_dblstck **dst, t_range range)
 	int	j;
 	int	k;
 
-	if (SIZE == 2 && !subset_issorted(*src, 2, wahr))
-	{
-		ft_putendl("sb");
-		swap(src);
-	}
+	if (SIZE < 4)
+		small_stuff(src, dst, range, falsch);
 	if (subset_issorted(*src, SIZE, wahr))
 		return ;
 	j = prepush_stck_b(src, dst, range);
@@ -115,11 +112,8 @@ void	stck_push_b(t_dblstck **src, t_dblstck **dst, t_range range)
 	int	j;
 	int	k;
 
-	if (SIZE == 2 && !subset_issorted(*src, 2, falsch))
-	{
-		ft_putendl("sa");
-		swap(src);
-	}
+	if (SIZE < 4)
+		small_stuff(src, dst, range, wahr);
 	if (subset_issorted(*src, SIZE, falsch))
 		return ;
 	j = prepush_stck_a(src, dst, range);

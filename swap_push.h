@@ -65,6 +65,14 @@ void			stck_push_a(t_dblstck **src, t_dblstck **dst, t_range range);
 void			stck_push_b(t_dblstck **src, t_dblstck **dst, t_range range);
 int				prepush_stck_a(t_dblstck **src, t_dblstck **dst,
 					t_range range);
+void			dbl_small_stuff(t_dblstck **src, t_dblstck **dst,
+					t_range range, t_bool dstisb);
+void			small_stuff(t_dblstck **src, t_dblstck **dst,
+					t_range range, t_bool dstisb);
+void			dbl_three(t_dblstck **src, t_range range);
+void			dbl_three_dstisntb(t_dblstck **src, t_range range);
+void			three(t_dblstck **src, t_range range);
+void			three_dstisntb(t_dblstck **src, t_range range);
 
 void			free_stck(t_dblstck **astck);
 void			free_stack_ops(t_dblstck **aastck, t_dblstck **abstck,
