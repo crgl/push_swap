@@ -75,11 +75,8 @@ int		convert_rank(t_dblstck *stck)
 
 	tmp = stck->next;
 	i = 1;
-	while (tmp != stck)
-	{
-		i++;
+	while (tmp != stck && i++)
 		tmp = tmp->next;
-	}
 	stck_array = (t_dblstck **)ft_memalloc((i + 1) * sizeof(t_dblstck *));
 	if (stck_array == NULL)
 		return (0);
@@ -92,5 +89,6 @@ int		convert_rank(t_dblstck *stck)
 	i = -1;
 	while (stck_array[++i] != NULL)
 		stck_array[i]->num = i;
+	free(stck_array);
 	return (i);
 }

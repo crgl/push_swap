@@ -12,6 +12,39 @@
 
 #include "swap_push.h"
 
+char	**maybe_split(char **argv, int *aargc)
+{
+	int		count;
+	char	**out;
+
+	count = 0;
+	if (*aargc > 2)
+	{
+		out = ft_memalloc((*aargc) * sizeof(char *));
+		while (++count < *aargc)
+			out[count - 1] = ft_strdup(argv[count]);
+		count--;
+	}
+	else
+	{
+		out = ft_strsplit(argv[1], ' ');
+		while (out[count])
+			count++;
+	}
+	*aargc = count;
+	return (out);
+}
+
+void	free_av(char **av)
+{
+	char	**tmp;
+
+	tmp = av;
+	while (*tmp)
+		free(*tmp++);
+	free(av);
+}
+
 t_bool	ft_isint(char *s)
 {
 	char	*shouldbes;
@@ -34,7 +67,10 @@ t_bool	find_int(int *checklist, int to_check, size_t lim)
 	while (i < lim)
 	{
 		if (checklist[i] == to_check)
+		{
+			free(checklist);
 			return (wahr);
+		}
 		i++;
 	}
 	return (falsch);
@@ -65,5 +101,6 @@ t_bool	check_dup(t_dblstck *stack)
 		checklist[i++] = stack->num;
 		stack = stack->next;
 	}
+	free(checklist);
 	return (falsch);
 }

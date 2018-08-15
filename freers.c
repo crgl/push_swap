@@ -14,15 +14,15 @@
 
 void	free_stck(t_dblstck **astck)
 {
-	void		*top;
+	t_dblstck	*top;
 	t_dblstck	*tmp;
 	t_dblstck	*tmp2;
 
 	top = *astck;
 	if (top == NULL)
 		return ;
-	tmp = (*astck)->next;
-	while ((void *)tmp != top)
+	tmp = top->next;
+	while (tmp != top)
 	{
 		tmp2 = tmp;
 		tmp = tmp->next;

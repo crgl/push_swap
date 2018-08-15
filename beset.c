@@ -6,7 +6,7 @@
 /*   By: cgleason <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/01 20:40:02 by cgleason          #+#    #+#             */
-/*   Updated: 2018/08/01 20:40:41 by cgleason         ###   ########.fr       */
+/*   Updated: 2018/08/08 13:34:45 by cgleason         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,15 @@ int		main(int argc, char **argv)
 	astck = NULL;
 	if (argc == 1 || (argc == 2 && ft_isint(argv[1])))
 		return (argc - 2);
-	while (--argc)
+	argv = maybe_split(argv, &argc);
+	while (argc--)
 	{
 		if (!ft_isint(argv[argc]))
 			break ;
 		add(&astck, dblstck_new(ft_atoi(argv[argc])));
 	}
-	if (check_dup(astck) || argc)
+	free_av(argv);
+	if (check_dup(astck) || argc != -1)
 	{
 		ft_putendl_fd("Error", 2);
 		free_stck(&astck);

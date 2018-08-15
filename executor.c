@@ -6,7 +6,7 @@
 /*   By: cgleason <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/27 21:48:21 by cgleason          #+#    #+#             */
-/*   Updated: 2018/07/27 21:48:23 by cgleason         ###   ########.fr       */
+/*   Updated: 2018/08/08 14:55:53 by cgleason         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ int		execute_ops(t_dblstck **astck, t_dblstck **bstck, char *op, t_bool rev)
 	return (0);
 }
 
-int		parse_ops(t_dblstck *astck, t_dblstck *bstck)
+void	parse_ops(t_dblstck *astck, t_dblstck *bstck)
 {
-	int		check;
-	char	*op;
-	t_bool	rev;
-	int		i;
+	int			check;
+	char		*op;
+	t_bool		rev;
+	int			i;
 
 	while ((check = get_next_line(0, &op)) > 0)
 	{
@@ -55,7 +55,7 @@ int		parse_ops(t_dblstck *astck, t_dblstck *bstck)
 		{
 			ft_putendl_fd("Error", 2);
 			free_stack_ops(&astck, &bstck, op);
-			return (1);
+			return ;
 		}
 		i = 0;
 		if (op[i] == 'r' && op[i + 1] == 'r' && op[i + 2])
@@ -63,11 +63,11 @@ int		parse_ops(t_dblstck *astck, t_dblstck *bstck)
 		if (execute_ops(&astck, &bstck, op + i, rev) == -1)
 		{
 			free_stack_ops(&astck, &bstck, op);
-			return (-1);
+			return ;
 		}
 		free(op);
 	}
-	return (!check) ? stck_issorted(astck, bstck) : check;
+	stck_issorted(astck, bstck);
 }
 
 int		main(int argc, char **argv)
@@ -77,22 +77,20 @@ int		main(int argc, char **argv)
 	astck = NULL;
 	if (argc == 1)
 		return (1);
-	if (argc == 2 && ft_isint(argv[1]))
-	{
-		ft_putendl("OK");
-		return (0);
-	}
-	while (--argc)
+	argv = maybe_split(argv, &argc);
+	while (argc--)
 	{
 		if (!ft_isint(argv[argc]))
 			break ;
 		add(&astck, dblstck_new(ft_atoi(argv[argc])));
 	}
-	if (check_dup(astck) || argc)
+	free_av(argv);
+	if (check_dup(astck) || argc != -1)
 	{
 		ft_putendl_fd("Error", 2);
 		free_stck(&astck);
 		return (1);
 	}
-	return (parse_ops(astck, NULL));
+	parse_ops(astck, NULL);
+	return (0);
 }

@@ -74,9 +74,11 @@ void			dbl_three_dstisntb(t_dblstck **src, t_range range);
 void			three(t_dblstck **src, t_range range);
 void			three_dstisntb(t_dblstck **src, t_range range);
 
+char			**maybe_split(char **argv, int *aargc);
 void			free_stck(t_dblstck **astck);
 void			free_stack_ops(t_dblstck **aastck, t_dblstck **abstck,
 					char *op);
+void			free_av(char **av);
 
 int				stcklst_len(t_dblstck **stck_array);
 void			heap_repair(t_dblstck **stck_array, int ind, int n);

@@ -67,7 +67,7 @@ int		parse_ops(t_dblstck *astck, t_dblstck *bstck)
 		}
 		free(op);
 	}
-	return (!check) ? stck_issorted(astck, bstck) : check;
+	return (stck_issorted(astck, bstck));
 }
 
 int		main(int argc, char **argv)
@@ -77,18 +77,15 @@ int		main(int argc, char **argv)
 	astck = NULL;
 	if (argc == 1)
 		return (1);
-	if (argc == 2 && ft_isint(argv[1]))
-	{
-		ft_putendl("OK");
-		return (0);
-	}
-	while (--argc)
+	argv = maybe_split(argv, &argc);
+	while (argc--)
 	{
 		if (!ft_isint(argv[argc]))
 			break ;
 		add(&astck, dblstck_new(ft_atoi(argv[argc])));
 	}
-	if (check_dup(astck) || argc)
+	free_av(argv);
+	if (check_dup(astck) || argc != -1)
 	{
 		ft_putendl_fd("Error", 2);
 		free_stck(&astck);
